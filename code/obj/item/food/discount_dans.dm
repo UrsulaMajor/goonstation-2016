@@ -73,7 +73,7 @@
 				R.add_reagent("venom",2)
 
 			if (10)
-				name = "Rabatt Dan's Snabb-Nudlar - Inkokt Lax Smörgåsbord Smak"
+				name = "Rabatt Dan's Snabb-Nudlar - Inkokt Lax SmÃ¶rgÃ¥sbord Smak"
 				R.add_reagent("cleaner",2)
 				R.add_reagent("mercury",2)
 				R.add_reagent("swedium",6)
@@ -277,3 +277,191 @@
 			var/icon/newicon = icon(src.icon, src.icon_state)
 			newicon.Blend( pick(rgb(0,0,255),rgb(204,0,102),rgb(255,255,0),rgb(51,153,0),rgb(219,161,40),rgb(84,32,0)) )
 			src.icon= newicon
+
+/obj/item/tvdinner
+	name = "Hungry Dan's Self-Microwaving Meals"
+	desc = "A box containing a self-heating TV dinner."
+	icon = 'icons/obj/foodNdrink/food_snacks.dmi'
+	icon_state = "tvdinnerc"
+	w_class = 1
+	throwforce = 2
+	var/full = 1
+	var/traytype = 0
+	flags = ONBELT | TABLEPASS | FPRINT
+	stamina_damage = 3
+	stamina_cost = 3
+	rand_pos = 1
+
+	New()
+		src.traytype = rand(1,9)
+		switch(src.traytype)
+			if (1)
+				src.name = "Hungry Dan's Self-Microwaving Meals - Seven Layer Salisbury Steak Flavor"
+				src.desc = "A box containing a self-heating TV dinner. There's a picture of a tasty steak on the cover."
+			if (2)
+				src.name = "Hungry Dan's Self-Microwaving Meals - Partially Baked Spring Chicken Flavor"
+				src.desc = "A box containing a self-heating TV dinner. Is this box shaking, or is it just you?"
+			if (3)
+				src.name = "Hungry Dan's Self-Microwaving Meals - Imported Lo Mein Lasagna Flavor"
+				src.desc = "A box containing a self-heating TV dinner. You can't read any of the words on this box!"
+			if (4)
+				src.name = "Morning Dan's Self-Microwaving Meals - Grand Slam Breakfast Flavor"
+				src.desc = "A box containing a self-heating TV dinner. There's a picture of a tasty looking egg, pancake, and sausage breakfast on it"
+			if (5)
+				src.name = "Corporal Dan's Self-Microwaving Meals - Last Meal Flavor"
+				src.desc = "A box containing a self-heating TV dinner. Guaranteed to be your last meal, or else."
+			if (6)
+				src.name = "Hungry Dan's Self-Microwaving Meals - Macaroni and Cheese Chunks Flavor"
+				src.desc = "A box containing a self-heating TV dinner. The bottom of the box says \"may contain research chemicals.\""
+			if (7)
+				src.name = "Gobbler Dan's Self-Microwaving Meals - Thanksgiving Dinner Flavor"
+				src.desc = "A box containing a self-heating TV dinner. Just like your cloning pod used to make."
+			if (8)
+				src.name = "Hungry Dan's Self-Microwaving Meals - \"Pizza\" Party Flavor"
+				src.desc = "A box containing a self-heating TV dinner. There's a picture of a scrumptious pizza on the cover"
+			if (9)
+				src.name = "Hungry Dan's Self-Microwaving Meals - BBQ Grill Alfredo Noodles Flavor"
+				src.desc = "A box containing a self-heating TV dinner. Have \"fusion\" dishes gone too far?"
+		return ..()
+
+	attack_hand(mob/user as mob)
+		if (user.find_in_hand(src))//r_hand == src || user.l_hand == src)
+			if (src.full == 0)
+				user.show_text("The box is empty you idiot.", "red")
+				return
+			else
+				var/obj/item/reagent_containers/food/snacks/tvdinner/W = new /obj/item/reagent_containers/food/snacks/tvdinner(null, src.traytype)
+				user.put_in_hand_or_drop(W)
+				src.full = 0
+				src.icon_state = "tvdinnero"
+				src.desc = "An empty TV dinner box."
+				return
+		else
+			return ..()
+            
+            
+
+/obj/item/reagent_containers/food/snacks/tvdinner
+	name = "Hungry Dan's Self-Microwaving Meals"
+	desc = "A self-heating TV dinner. You should probably use a fork."
+	icon = 'icons/obj/foodNdrink/food_snacks.dmi'
+	icon_state = "tvdinnert"
+	needfork = 1
+	amount = 2
+	heal_amt = 2
+	doants = 0 //Ants aren't dumb enough to try to eat these.
+	var/activated = 0
+	initial_volume = 50
+
+	New(loc, var/traytype = 0)
+		..()
+		var/datum/reagents/R = reagents
+		if (prob(75))
+			R.add_reagent("grease", 3)
+		else
+			R.add_reagent("badgrease",3)
+		R.add_reagent("msg",9)
+		R.add_reagent("nicotine",3)
+		R.add_reagent("salt",5)
+		if(!traytype)
+			traytype = rand(1, 9)
+		switch(traytype)
+			if (1)
+				src.name = "Hungry Dan's Self-Microwaving Meals - Seven Layer Salisbury Steak Flavor" //Seven layers of reconsituted meat product
+				src.desc = "A self-heating TV dinner containing a squashed brown mess. You should probably use a fork."
+				R.add_reagent("beff", 7)
+				R.add_reagent("bread",2)
+				R.add_reagent("juice_tomato",10)
+				R.add_reagent("cornstarch",10)
+
+
+			if (2)
+				src.name = "Hungry Dan's Self-Microwaving Meals - Partially Baked Spring Chicken Flavor" //So spring it's an egg
+				src.desc = "A self-heating TV dinner. Is... this still moving? You should probably use a fork."
+				R.add_reagent("THC", 4.20)
+				R.add_reagent("oil", 10)
+				if (prob(25))
+					R.add_reagent("flaptonium", 5) //the egg hatched
+				else
+					R.add_reagent("chickensoup",5)
+					R.add_reagent("egg",5) //hadn't hatched yet
+				R.add_reagent("chocolate", 10) //chocolate brownie
+
+
+			if (3)
+				src.name = "Hungry Dan's Self-Microwaving Meals - Imported Lo Mein Lasagna Flavor" //Imported from swede-land
+				src.desc = "A self-heating TV dinner containing a well-travelled chinese lasagna. You should probably use a fork."
+				R.add_reagent("juice_tomato", 5)
+				R.add_reagent("swedium", 5)
+				R.add_reagent("bread", 10)
+				R.add_reagent("fakecheese",2)
+
+			if (4)
+				src.name = "Morning Dan's Self-Microwaving Meals - Grand Slam Breakfast Flavor" //A real knockout
+				desc = "A self-heating TV dinner that'll knock you out of the park. You should probably use a fork."
+				R.add_reagent("porktonium", 4)
+				R.add_reagent("VHFCS", 2)
+				R.add_reagent("coffee", 4)
+				R.add_reagent("egg", 4)
+				R.add_reagent("george_melonium", 1) //IT'S OUTTA THE PARK
+
+			if (5)
+				src.name = "Corporal Dan's Self-Microwaving Meals - Last Meal Flavor" //Your last meal, or else!
+				src.desc = "A self-heating TV dinner that's guaranteed to be your last meal, or else. You should probably use a fork."
+				R.add_reagent("gravy",10)
+				R.add_reagent("beff",4)
+				if (prob(5))
+					R.add_reagent("curare", 2)
+				else
+					R.add_reagent("capulettium", 5)
+                
+                
+			if (6)
+				src.name = "Hungry Dan's Self-Microwaving Microwaveable Meals - Macaroni and Cheese Flavor"
+				src.desc = "A self-heating TV dinner containing a multicolored macaroni and cheese. You should probably use a fork."
+				R.add_reagent("fakecheese",4)
+				R.add_reagent("LSD",2)
+				R.add_reagent("bread",3)
+
+
+			if (7)
+				src.name = "Gobbler Dan's Self-Microwaving Meals - Thanksgiving Dinner Flavor"
+				src.desc = "A self-heating TV dinner that looks so filling you're yawning just thinking about it. You should probably use a fork."
+				R.add_reagent("blood",4)
+				R.add_reagent("synthflesh",3)
+				R.add_reagent("sonambutril",1)
+				R.add_reagent("VHFCS", 4)
+				R.add_reagent("mashedpotatoes",5)
+				R.add_reagent("gravy",5)
+
+			if (8)
+				src.name = "Hungry Dan's Self-Microwaving Meals - \"Pizza\" Party Flavor"
+				src.desc = "A self-heating TV dinner containing a \"pizza\". You should probably use a fork."
+				R.add_reagent("fakecheese",6)
+				R.add_reagent("pepperoni",3)
+				R.add_reagent("paper",3)
+				R.add_reagent("mercury",1)
+
+			if (9)
+				src.name = "Hungry Dan's Self-Microwaving Meals - BBQ Grill Alfredo Noodles Flavor"
+				src.desc = "A self-heating TV dinner saltier than Lot's wife. You should probably use a fork."
+				R.add_reagent("salt", 20)
+				R.add_reagent("ectoplasm",1) //Insert joke about deadchat here
+				R.add_reagent("bread", 10)
+				R.add_reagent("chickensoup",3)
+				R.add_reagent("cheese",3)
+				R.add_reagent("capsaicin",5)
+				R.add_reagent("hydrogen",10)
+                                
+	attack_self(mob/user as mob)
+		if (activated)
+			return
+
+		src.activated = 1
+		if (reagents)
+			reagents.add_reagent("thalmerite",2)
+			reagents.add_reagent("oxygen", 2)
+			reagents.add_reagent("radium", 1) //Self Microwaving?!
+			reagents.handle_reactions()
+		boutput(user, "You twist the tray, activating the heater mechanism.")
+		return
