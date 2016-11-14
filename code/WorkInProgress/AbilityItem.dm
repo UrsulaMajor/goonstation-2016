@@ -294,7 +294,10 @@
 			var/obj/ability_button/NB = new A(src)
 			ability_buttons += NB
 
-		for(var/obj/ability_button/B in ability_buttons) B.the_item = src
+		for(var/obj/ability_button/B in ability_buttons) 
+			B.the_item = src
+			B.name = B.name + " ([src.name])"
+			
 //		if(ability_buttons.len > 0)
 //			spawn(0) check_abilities()
 		..()
